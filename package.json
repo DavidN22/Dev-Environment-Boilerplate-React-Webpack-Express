@@ -4,9 +4,10 @@
   "description": "A boilerplate for a webpack (React) frontend and Express backend.",
   "main": "server.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/server.js",
-    "client": "npm --prefix client run dev"
+    "dev": "concurrently \"npm run start\" \"npm run client\"",
+    "start": "nodemon server/server.js",
+    "client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build"
   },
   "keywords": [],
   "author": "David",

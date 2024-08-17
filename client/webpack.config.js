@@ -2,62 +2,64 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    entry: "./src/index.jsx",
+  entry: "./src/index.jsx",
 
   output: {
-    path: path.join(__dirname, "/dist"), // the bundle output path
-    filename: "bundle.js", // the name of the bundle
-    publicPath: '/',
+    path: path.join(__dirname, "/dist"), // The bundle output path
+    filename: "bundle.js", // The name of the bundle
+    publicPath: "/",
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./index.html", // to import index.html file inside index.js
+      template: "./index.html", // Reference to the HTML template
     }),
   ],
-  
+
   devServer: {
-    port: 3000, // you can change the port
-    historyApiFallback: true, // ensures all routes fallback to index.html
+    port: 3000, // Port for the development server
+    historyApiFallback: true, // Ensures all routes fallback to index.html
     proxy: [
       {
-        context: ['/api'], 
-        target: 'http://localhost:5000',
+        context: ["/api"],
+        target: "http://localhost:5000",
         changeOrigin: true, // Ensure the origin is changed if needed
-        //pathRewrite: { '^/api': '' }, // If your backend doesn't expect the /api prefix
-      }
+        // pathRewrite: { '^/api': '' }, // Uncomment if your backend doesn't expect the /api prefix
+      },
     ],
   },
-  mode: 'development',
+  mode: "development",
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, // .js and .jsx files
-        exclude: /node_modules/, // excluding the node_modules folder
+        test: /\.(js|jsx)$/, // Handles .js and .jsx files
+        exclude: /node_modules/, // Excludes the node_modules folder
         use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    targets: 'defaults',
-                  },
-                ],
-                '@babel/preset-react',
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: "defaults",
+                },
               ],
-            },
-            
+              [
+                "@babel/preset-react",
+                {
+                  runtime: "automatic", // Use the new JSX runtime
+                },
+              ],
+            ],
           },
-          
+        },
       },
 
-      
       {
-        test: /\.(sa|sc|c)ss$/, // styles files
+        test: /\.(sa|sc|c)ss$/, // Handles styles files
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/, // to import images and fonts
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/, // Handles images and fonts
         loader: "url-loader",
         options: { limit: false },
       },
